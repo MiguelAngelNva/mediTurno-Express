@@ -3,7 +3,7 @@ const { Medico, Especialidad } = require('../models');
 exports.getMedicos = async (req, res) => {
   try {
     const medicos = await Medico.findAll({
-      include: Especialidad // si querés incluir la relación muchos a muchos
+      include: Especialidad 
     });
     res.json(medicos);
   } catch (err) {
