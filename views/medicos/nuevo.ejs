@@ -7,9 +7,30 @@
     <h1>Crear nuevo médico</h1>
     <form action="/medicos/crear" method="POST">
         <input name="med_primer_nombre" placeholder="Primer nombre" required><br>
+        <input name="med_segundo_nombre" placeholder="Segundo nombre"><br>
         <input name="med_primer_apellido" placeholder="Primer apellido" required><br>
+        <input name="med_segundo_apellido" placeholder="Segundo apellido"><br>
         <input name="med_telefono" placeholder="Teléfono"><br>
         <input name="med_correo" placeholder="Correo"><br>
+        <input name="med_licencia" placeholder="Licencia médica"><br>
+
+        <label>Documento:</label>
+        <select name="doc_id" required>
+            <% documentos.forEach(doc => { %>
+                <option value="<%= doc.doc_id %>">
+                    <%= doc.doc_tipo_documento %> - <%= doc.doc_numero_documento %>
+                </option>
+            <% }) %>
+        </select><br>
+
+        <label>Estado:</label>
+        <select name="est_id" required>
+            <% estados.forEach(est => { %>
+                <option value="<%= est.est_id %>">
+                    <%= est.est_nombre %>
+                </option>
+            <% }) %>
+        </select><br>
 
         <h3>Especialidades</h3>
         <% especialidades.forEach(esp => { %>
