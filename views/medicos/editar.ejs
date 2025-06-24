@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Editar Médico</title>
+</head>
+<body>
+    <h1>Editar Médico</h1>
+    <form action="/medicos/<%= medico.med_id %>/actualizar" method="POST">
+        <input name="med_primer_nombre" value="<%= medico.med_primer_nombre %>" required><br>
+        <input name="med_primer_apellido" value="<%= medico.med_primer_apellido %>" required><br>
+        <input name="med_telefono" value="<%= medico.med_telefono %>"><br>
+        <input name="med_correo" value="<%= medico.med_correo %>"><br>
+
+        <h3>Especialidades</h3>
+        <% especialidades.forEach(esp => { %>
+            <label>
+                <input type="checkbox" name="esp_ids" value="<%= esp.esp_id %>"
+                    <%= medico.especialidades.some(e => e.esp_id === esp.esp_id) ? 'checked' : '' %>>
+                <%= esp.esp_nombre %>
+            </label><br>
+        <% }) %>
+
+        <br>
+        <button type="submit">Guardar Cambios</button>
+        <a href="/medicos/vista">Cancelar</a>
+    </form>
+</body>
+</html>

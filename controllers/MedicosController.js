@@ -1,9 +1,13 @@
-const { Medico, Especialidad } = require('../models');
+const { Medico, Especialidad, Documento, Estado } = require('../models');
 
 exports.getMedicos = async (req, res) => {
   try {
     const medicos = await Medico.findAll({
-      include: Especialidad 
+      include: [
+        Especialidad,
+        Documento,
+        Estado
+      ]
     });
     res.json(medicos);
   } catch (err) {
@@ -20,10 +24,46 @@ exports.createMedico = async (req, res) => {
   }
 };
 
+exports.createMedicoConEspecialidades = async (req, res) => {
+  try {
+    const { esp_ids, ...medicoData } = req.body;
+
+    const medico = await Medico.create(medicoData);
+
+    if (esp_ids && esp_ids.length > 0) {
+      await medico.addEspecialidad(esp_ids); // Sequelize maneja la tabla intermedia
+    }
+
+    const medicoCompleto = await Medico.findByPk(medico.med_id, {
+      include: [Especialidad, Documento, Estado]
+    });
+
+    res.status(201).json(medicoCompleto);
+  } catch (err) {
+    res.status(500).json({ error: 'Error al crear médico con especialidades', detail: err.message });
+  }
+};
+
 exports.getMedicoById = async (req, res) => {
   try {
     const medico = await Medico.findByPk(req.params.id, {
-      include: Especialidad
+      include: [Especialidad, Documento, Estado]
+    });
+    if (!medico) return res.status(404).json({ error: 'Médico no encontrado' });
+    res.json(medico);
+  } catch (err) {
+    res.status(500).json({ error: 'Error al buscar médico', detail: err.message });
+  }
+};
+
+exports.getMedicoById = async (req, res) => {
+  try {
+    const medico = await Medico.findByPk(req.params.id, {
+      include: [
+        Especialidad,
+        Documento,
+        Estado
+      ]
     });
     if (!medico) return res.status(404).json({ error: 'Médico no encontrado' });
     res.json(medico);
@@ -41,6 +81,25 @@ exports.updateMedico = async (req, res) => {
     res.json(medico);
   } catch (err) {
     res.status(500).json({ error: 'Error al actualizar médico', detail: err.message });
+  }
+};
+
+exports.updateEspecialidadesDelMedico = async (req, res) => {
+  try {
+    const { esp_ids } = req.body;
+
+    const medico = await Medico.findByPk(req.params.id);
+    if (!medico) return res.status(404).json({ error: 'Médico no encontrado' });
+
+    await medico.setEspecialidades(esp_ids);
+
+    const medicoActualizado = await Medico.findByPk(req.params.id, {
+      include: Especialidad
+    });
+
+    res.json(medicoActualizado);
+  } catch (err) {
+    res.status(500).json({ error: 'Error al actualizar especialidades del médico', detail: err.message });
   }
 };
 

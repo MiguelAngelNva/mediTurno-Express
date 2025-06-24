@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Nuevo Médico</title>
+</head>
+<body>
+    <h1>Crear nuevo médico</h1>
+    <form action="/medicos/crear" method="POST">
+        <input name="med_primer_nombre" placeholder="Primer nombre" required><br>
+        <input name="med_primer_apellido" placeholder="Primer apellido" required><br>
+        <input name="med_telefono" placeholder="Teléfono"><br>
+        <input name="med_correo" placeholder="Correo"><br>
+
+        <h3>Especialidades</h3>
+        <% especialidades.forEach(esp => { %>
+            <label>
+                <input type="checkbox" name="esp_ids" value="<%= esp.esp_id %>">
+                <%= esp.esp_nombre %>
+            </label><br>
+        <% }) %>
+
+        <br>
+        <button type="submit">Crear Médico</button>
+        <a href="/medicos/vista">Cancelar</a>
+    </form>
+</body>
+</html>
