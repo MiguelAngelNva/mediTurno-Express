@@ -1,41 +1,49 @@
-const { Especialidad } = require('../models');
+const { especialidades } = require('../models');
 
-exports.getEspecialidades = async (req, res) => {
+exports.listar = async (req, res) => {
   try {
-    const especialidades = await Especialidad.findAll();
-    res.json(especialidades);
+    const data = await especialidades.findAll();
+    res.json(data);
   } catch (err) {
-    res.status(500).json({ error: 'Error al obtener especialidades', detail: err.message });
+    res.status(500).json({ error: 'Error al listar especialidades', detail: err.message });
   }
 };
 
-exports.createEspecialidad = async (req, res) => {
+exports.crear = async (req, res) => {
   try {
-    const especialidad = await Especialidad.create(req.body);
-    res.status(201).json(especialidad);
+    const nuevo = await especialidades.create(req.body);
+    res.status(201).json(nuevo);
   } catch (err) {
     res.status(500).json({ error: 'Error al crear especialidad', detail: err.message });
   }
 };
 
-exports.updateEspecialidad = async (req, res) => {
+exports.buscarPorId = async (req, res) => {
   try {
-    const especialidad = await Especialidad.findByPk(req.params.id);
-    if (!especialidad) return res.status(404).json({ error: 'Especialidad no encontrada' });
+    const item = await especialidades.findByPk(req.params.id);
+    if (!item) return res.status(404).json({ error: 'Especialidad no encontrada' });
+    res.json(item);
+  } catch (err) {
+    res.status(500).json({ error: 'Error al buscar especialidad', detail: err.message });
+  }
+};
 
-    await especialidad.update(req.body);
-    res.json(especialidad);
+exports.actualizar = async (req, res) => {
+  try {
+    const item = await especialidades.findByPk(req.params.id);
+    if (!item) return res.status(404).json({ error: 'Especialidad no encontrada' });
+    await item.update(req.body);
+    res.json(item);
   } catch (err) {
     res.status(500).json({ error: 'Error al actualizar especialidad', detail: err.message });
   }
 };
 
-exports.deleteEspecialidad = async (req, res) => {
+exports.eliminar = async (req, res) => {
   try {
-    const especialidad = await Especialidad.findByPk(req.params.id);
-    if (!especialidad) return res.status(404).json({ error: 'Especialidad no encontrada' });
-
-    await especialidad.destroy();
+    const item = await especialidades.findByPk(req.params.id);
+    if (!item) return res.status(404).json({ error: 'Especialidad no encontrada' });
+    await item.destroy();
     res.status(204).send();
   } catch (err) {
     res.status(500).json({ error: 'Error al eliminar especialidad', detail: err.message });
