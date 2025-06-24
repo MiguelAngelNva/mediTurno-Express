@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
         med_correo: {type: DataTypes.STRING(100)},
         med_licencia: {type: DataTypes.STRING(50)},
         doc_id: {type: DataTypes.INTEGER, references: {model:'documentos', key: 'doc_id'}},
-        est_id: {type: DataTypes.INTEGER, references: {model: 'documentos', key: 'doc_id'}}
+        est_id: {type: DataTypes.INTEGER, references: {model: 'estados', key: 'est_id'}}
     }, {
         timestamps: false,
         freezeTableName: true
