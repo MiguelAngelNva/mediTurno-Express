@@ -37,6 +37,7 @@ const cors = require('cors');
 const { sequelize } = require("./models");
 
 // 🔧 Rutas
+const pacientesRoutes = require("./routes/pacientes");
 const medicosRoutes = require("./routes/medicos");
 const citasRoutes = require("./routes/citas");
 
@@ -50,6 +51,7 @@ app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
 // ✅ Registro de rutas
+app.use('/pacientes', pacientesRoutes);
 app.use('/medicos', medicosRoutes);
 app.use('/citas', citasRoutes);
 

@@ -1,17 +1,17 @@
-const { pacientes, documentos, estados } = require('../models');
+const { Paciente, Documento, Estado } = require('../models');
 
 exports.listar = async (req, res) => {
   try {
-    const data = await pacientes.findAll({ include: [documentos, estados] });
+    const data = await Paciente.findAll({ include: [Documento, Estado] });
     res.json(data);
   } catch (err) {
-    res.status(500).json({ error: 'Error al obtener pacientes', detail: err.message });
+    res.status(500).json({ error: 'Error al obtener Paciente', detail: err.message });
   }
 };
 
 exports.crear = async (req, res) => {
   try {
-    const nuevo = await pacientes.create(req.body);
+    const nuevo = await Paciente.create(req.body);
     res.status(201).json(nuevo);
   } catch (err) {
     res.status(500).json({ error: 'Error al crear paciente', detail: err.message });
@@ -20,8 +20,8 @@ exports.crear = async (req, res) => {
 
 exports.buscarPorId = async (req, res) => {
   try {
-    const paciente = await pacientes.findByPk(req.params.id, {
-      include: [documentos, estados]
+    const paciente = await Paciente.findByPk(req.params.id, {
+      include: [Documento, Estado]
     });
     if (!paciente) return res.status(404).json({ error: 'Paciente no encontrado' });
     res.json(paciente);
@@ -32,7 +32,7 @@ exports.buscarPorId = async (req, res) => {
 
 exports.actualizar = async (req, res) => {
   try {
-    const paciente = await pacientes.findByPk(req.params.id);
+    const paciente = await Paciente.findByPk(req.params.id);
     if (!paciente) return res.status(404).json({ error: 'Paciente no encontrado' });
     await paciente.update(req.body);
     res.json(paciente);
@@ -43,7 +43,7 @@ exports.actualizar = async (req, res) => {
 
 exports.eliminar = async (req, res) => {
   try {
-    const paciente = await pacientes.findByPk(req.params.id);
+    const paciente = await Paciente.findByPk(req.params.id);
     if (!paciente) return res.status(404).json({ error: 'Paciente no encontrado' });
     await paciente.destroy();
     res.status(204).send();

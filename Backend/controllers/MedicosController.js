@@ -1,8 +1,8 @@
-const { medicos, documentos, estados } = require('../models');
+const { Medico, Documento, Estado } = require('../models');
 
 exports.listar = async (req, res) => {
   try {
-    const data = await medicos.findAll({ include: [documentos, estados] });
+    const data = await Medico.findAll({ include: [Documento, Estado] });
     res.json(data);
   } catch (err) {
     res.status(500).json({ error: 'Error al listar médicos', detail: err.message });
@@ -11,7 +11,7 @@ exports.listar = async (req, res) => {
 
 exports.crear = async (req, res) => {
   try {
-    const nuevo = await medicos.create(req.body);
+    const nuevo = await Medico.create(req.body);
     res.status(201).json(nuevo);
   } catch (err) {
     res.status(500).json({ error: 'Error al crear médico', detail: err.message });
@@ -20,7 +20,7 @@ exports.crear = async (req, res) => {
 
 exports.buscarPorId = async (req, res) => {
   try {
-    const medico = await medicos.findByPk(req.params.id, { include: [documentos, estados] });
+    const medico = await Medico.findByPk(req.params.id, { include: [Documento, Estado] });
     if (!medico) return res.status(404).json({ error: 'Médico no encontrado' });
     res.json(medico);
   } catch (err) {
@@ -30,7 +30,7 @@ exports.buscarPorId = async (req, res) => {
 
 exports.actualizar = async (req, res) => {
   try {
-    const medico = await medicos.findByPk(req.params.id);
+    const medico = await Medico.findByPk(req.params.id);
     if (!medico) return res.status(404).json({ error: 'Médico no encontrado' });
     await medico.update(req.body);
     res.json(medico);
@@ -41,7 +41,7 @@ exports.actualizar = async (req, res) => {
 
 exports.eliminar = async (req, res) => {
   try {
-    const medico = await medicos.findByPk(req.params.id);
+    const medico = await Medico.findByPk(req.params.id);
     if (!medico) return res.status(404).json({ error: 'Médico no encontrado' });
     await medico.destroy();
     res.status(204).send();
