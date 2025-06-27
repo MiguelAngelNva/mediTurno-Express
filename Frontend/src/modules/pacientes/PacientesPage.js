@@ -125,10 +125,10 @@ export default function PacientesPage() {
               <td>{p.doc_id}</td>
               <td>{p.est_id}</td>
               <td>
-                <button className="btn btn-sm btn-warning me-2" onClick={() => editar(m)}>
+                <button className="btn btn-sm btn-warning me-2" onClick={() => editar(p)}>
                   <i className="bi bi-pencil-square"></i>
                 </button>
-                <button className="btn btn-sm btn-danger" onClick={() => eliminar(m.pac_id)}>
+                <button className="btn btn-sm btn-danger" onClick={() => eliminar(p.pac_id)}>
                   <i className="bi bi-trash"></i>
                 </button>
               </td>
